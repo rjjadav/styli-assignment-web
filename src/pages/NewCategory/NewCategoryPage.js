@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { addNewCategory } from '../../services/category-service';
 import CategoryForm from '../../components/CategoryForm/CategoryForm';
 import { useSaveCategory } from "../../hooks/category/useSaveCategory";
 import { Link } from 'react-router-dom';

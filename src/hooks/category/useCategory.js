@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { addNewCategory, getAllCategories, getCategoryById } from "../../services/category-service"
+import { useQuery } from "@tanstack/react-query"
+import { getAllCategories, getCategoryById } from "../../services/category-service"
 
 
 export const useCategory = () => {

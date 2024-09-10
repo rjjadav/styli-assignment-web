@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import { buildCategoryTree, getAllCategories } from "../../services/category-service";
+import { buildCategoryTree } from "../../services/category-service";
 import CategoryTree from "../../components/CategoryTree/CategoryTree";
 import { Button, Card, CardContent } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useCategory } from "../../hooks/category/useCategory";
-import { useRemoveCategory } from "../../hooks/category/useRemoveCategory";
 
 const CategoriesPage = () => {
-    const { data, isLoading, isError, error, refetch } = useCategory();
+    const { data, isLoading, isError } = useCategory();
+    
     if(isError){
         alert("Error while fetching categories");
         return null;
@@ -15,9 +14,7 @@ const CategoriesPage = () => {
     
     if(isLoading) return <>Fetching Categories...</>
     
-    
     const categoryList = buildCategoryTree(data);
-
 
     return <>
         <div className="py-4 flex justify-between">

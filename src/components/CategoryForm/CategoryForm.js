@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button, MenuItem, FormControl, InputLabel, Select, Box, Typography } from '@mui/material';
-import { addNewCategory, flattenCategoryTree, getAllCategories } from '../../services/category-service';
+import React, { useState } from 'react';
+import { TextField, Button, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import { flattenCategoryTree } from '../../services/category-service';
 import { useCategory } from '../../hooks/category/useCategory';
 
 const CategoryForm = ({ type = 'new', category = null, onSubmit }) => {

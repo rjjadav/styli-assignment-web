@@ -1,9 +1,6 @@
 import { useParams } from "react-router-dom";
 import CategoryForm from "../../components/CategoryForm/CategoryForm";
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { getCategoryById, updateCategory } from "../../services/category-service";
-import axios from "axios";
 import { useUpdateCategory } from "../../hooks/category/useUpdateCategory";
 import { useCateryById } from "../../hooks/category/useCategory";
 

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import "./CategoryTree.css";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { DeleteOutline, Edit } from "@mui/icons-material";
 import { useRemoveCategory } from "../../hooks/category/useRemoveCategory";
 import { useCategory } from "../../hooks/category/useCategory";
 
-const CategoryTree = ({ categories = [], onDelete }) => {
+const CategoryTree = ({ categories = [] }) => {
   
   
   const { mutateAsync } = useRemoveCategory();
