@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, MenuItem, FormControl, InputLabel, Select, Box, Typography } from '@mui/material';
 import { addNewCategory, flattenCategoryTree, getAllCategories } from '../../services/category-service';
+import { useCategory } from '../../hooks/category/useCategory';
 
 const CategoryForm = ({ type = 'new', category = null, onSubmit }) => {
+    
     const [name, setName] = useState(category?.name || '');
     const [parentId, setParentId] = useState(category?.parentId || null);
-    const [categories, setCategories] = useState([]);
+    const {data, isLoading, isError, error} = useCategory();
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await getAllCategories();
-                const categoriesData = flattenCategoryTree(response);
-                setCategories(categoriesData);
-            } catch (error) {
-                console.error('Error fetching categories', error);
-            }
-        };
+    if(isLoading) return <>Fetching Categories...</>
+    const categories = flattenCategoryTree(data);
 
-        fetchCategories();
-    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

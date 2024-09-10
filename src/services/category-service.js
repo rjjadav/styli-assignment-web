@@ -21,6 +21,11 @@ export const updateCategory = async (id, category) => {
     return data;
 }
 
+export const removeCategory = async (id) => {
+    const {data} = await axios.delete(`${baseUrl}category/${id}`);
+    return data;
+}
+
 
 export const flattenCategoryTree = (categories, level = 0, parentId = null) => {
     let flatCategories = [];
@@ -31,4 +36,13 @@ export const flattenCategoryTree = (categories, level = 0, parentId = null) => {
             flatCategories = flatCategories.concat(flattenCategoryTree(categories, level + 1, category._id));
         });
     return flatCategories;
+};
+
+export const buildCategoryTree = (categories, parentId = null) => {
+    return categories
+        .filter(category => category.parentId === parentId)
+        .map(category => ({
+            ...category,
+            children: buildCategoryTree(categories, category._id),
+        }));
 };

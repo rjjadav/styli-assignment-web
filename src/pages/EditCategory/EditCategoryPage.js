@@ -4,28 +4,20 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getCategoryById, updateCategory } from "../../services/category-service";
 import axios from "axios";
+import { useUpdateCategory } from "../../hooks/category/useUpdateCategory";
+import { useCateryById } from "../../hooks/category/useCategory";
 
 const EditCategoryPage = () => {
-    const [category, setCategory] = useState(null);
+    
     const { id } = useParams();
+    const { mutateAsync } = useUpdateCategory();
+    const {data: category, isLoading} = useCateryById(id)
 
-    useEffect(() => {
-        const fetchCategoryById = async () => {
-            try {
-                const response = await getCategoryById(id);
-                setCategory(response);
-            } catch (error) {
-                console.error('Error fetching categories', error);
-                
-            }
-
-        }
-        fetchCategoryById();
-    }, [])
+    if(isLoading) return <>Fetching category</>
 
     const handleSubmit = async (event) => {
         try {
-            await updateCategory(id, { name: event.name, parentId: event.parentId }); 
+            await mutateAsync({id, name: event.name, parentId: event.parentId }); 
             alert('Category updated successfully');
           } catch (error) {
             console.error('Error updating category', error);

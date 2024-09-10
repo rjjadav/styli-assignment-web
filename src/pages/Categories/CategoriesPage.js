@@ -1,35 +1,23 @@
 import { useEffect, useState } from "react";
-import { getAllCategories } from "../../services/category-service";
+import { buildCategoryTree, getAllCategories } from "../../services/category-service";
 import CategoryTree from "../../components/CategoryTree/CategoryTree";
 import { Button, Card, CardContent } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useCategory } from "../../hooks/category/useCategory";
+import { useRemoveCategory } from "../../hooks/category/useRemoveCategory";
 
 const CategoriesPage = () => {
-    const [categoryList, setCategoryList] = useState([]);
-
-    const buildCategoryTree = (categories, parentId = null) => {
-        return categories
-            .filter(category => category.parentId === parentId)
-            .map(category => ({
-                ...category,
-                children: buildCategoryTree(categories, category._id),
-            }));
-    };
-
+    const { data, isLoading, isError, error, refetch } = useCategory();
+    if(isError){
+        alert("Error while fetching categories");
+        return null;
+    } 
     
-    useEffect(() => {
-        const getAllCategory = async () => {
-            try {
-                const data = await getAllCategories();
-                const categoryTree = buildCategoryTree(data);
-                setCategoryList(categoryTree);
-            } catch (error) {
-                alert('Error while fetching all category.')
-            }
+    if(isLoading) return <>Fetching Categories...</>
     
-        }
-        getAllCategory();
-    }, [])
+    
+    const categoryList = buildCategoryTree(data);
+
 
     return <>
         <div className="py-4 flex justify-between">
@@ -38,7 +26,7 @@ const CategoriesPage = () => {
         </div>
         <Card variant="outlined">
             <CardContent>
-                <CategoryTree categories={categoryList} />
+                <CategoryTree categories={categoryList}/>
             </CardContent>
         </Card>
     </>
