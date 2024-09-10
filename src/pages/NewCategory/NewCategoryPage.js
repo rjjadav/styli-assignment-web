@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, MenuItem, FormControl, InputLabel, Select, Box, Typography } from '@mui/material';
 import axios from 'axios';
-import { addNewCategory, getAllCategories } from '../../services/category-service';
+import { addNewCategory, getAllCategories, flattenCategoryTree } from '../../services/category-service';
+import CategoryForm from '../../components/CategoryForm/CategoryForm';
 
 const NewCategoryPage = () => {
     const [name, setName] = useState('');
@@ -22,21 +23,9 @@ const NewCategoryPage = () => {
         fetchCategories();
     }, []);
 
-    const flattenCategoryTree = (categories, level = 0, parentId = null) => {
-        let flatCategories = [];
-        categories
-            .filter(category => category.parentId === parentId)
-            .forEach(category => {
-                flatCategories.push({ ...category, level });
-                flatCategories = flatCategories.concat(flattenCategoryTree(categories, level + 1, category._id));
-            });
-        return flatCategories;
-    };
-
     const handleSubmit = async (event) => {
-        event.preventDefault();
         try {
-            await addNewCategory({ name, parentId });
+            await addNewCategory({ name: event.name, parentId: event.parentId });
             alert('Category added successfully');
             setName('');
             setParentId('');
@@ -51,7 +40,8 @@ const NewCategoryPage = () => {
             <Typography variant="h4" gutterBottom>
                 Add New Category
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <CategoryForm type='new' onSubmit={handleSubmit}/>
+            {/* <form onSubmit={handleSubmit}>
                 <TextField
                     fullWidth
                     label="Category Name"
@@ -81,7 +71,7 @@ const NewCategoryPage = () => {
                 <Button type="submit" variant="contained" color="primary" fullWidth>
                     Add Category
                 </Button>
-            </form>
+            </form> */}
         </Box>
     );
 };

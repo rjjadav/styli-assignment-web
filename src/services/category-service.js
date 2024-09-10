@@ -8,5 +8,27 @@ export const getAllCategories = async () => {
 } 
 
 export const addNewCategory = async (category) => {
-    const {data} = await axios.post('http://localhost:3000/category', category);
+    const {data} = await axios.post(`${baseUrl}category`, category);
 }
+
+export const getCategoryById = async (id) => {
+    const {data} = await axios.get(`${baseUrl}category/${id}`)
+    return data;
+} 
+
+export const updateCategory = async (id, category) => {
+    const {data} = await axios.put(`${baseUrl}category/${id}`, category); 
+    return data;
+}
+
+
+export const flattenCategoryTree = (categories, level = 0, parentId = null) => {
+    let flatCategories = [];
+    categories
+        .filter(category => category.parentId === parentId)
+        .forEach(category => {
+            flatCategories.push({ ...category, level });
+            flatCategories = flatCategories.concat(flattenCategoryTree(categories, level + 1, category._id));
+        });
+    return flatCategories;
+};
